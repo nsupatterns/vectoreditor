@@ -1,7 +1,7 @@
 
 package org.nsu.vectoreditor;
 
-public class Rectangle extends Figure {
+public class Rectangle extends Shape {
 
     public Rectangle(int px1, int py1, int px2, int py2) {
         x1 = px1;

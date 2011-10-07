@@ -4,17 +4,17 @@ package org.nsu.vectoreditor;
 public class Scene extends java.awt.Component {
 
     public void paint(java.awt.Graphics graphics) {
-        FigureListItem item = first;
+        ShapeListItem item = first;
         while(item != null) {
-            item.figure.draw(graphics);
+            item.shape.draw(graphics);
             item = item.nextItem;
         }
     }
 
-    public void addFigure(Figure figure) {
+    public void addShape(Shape shape) {
 
-        FigureListItem item = new FigureListItem();
-        item.figure = figure;
+        ShapeListItem item = new ShapeListItem();
+        item.shape = shape;
         item.nextItem = null;
 
         if(first == null) {
@@ -27,7 +27,7 @@ public class Scene extends java.awt.Component {
         }
     }
 
-    FigureListItem first;
-    FigureListItem last;
+    ShapeListItem first;
+    ShapeListItem last;
 }
 

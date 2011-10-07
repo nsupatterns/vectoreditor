@@ -1,7 +1,7 @@
 
 package org.nsu.vectoreditor;
 
-public class Circle extends Figure {
+public class Circle extends Shape {
 
     public Circle(int px, int py, int pradius) {
         x = px;

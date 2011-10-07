@@ -1,7 +1,7 @@
 
 package org.nsu.vectoreditor;
 
-public class Triangle extends Figure {
+public class Triangle extends Shape {
 
     public Triangle(int px1, int py1, int px2, int py2, int px3, int py3) {
         x1 = px1;
