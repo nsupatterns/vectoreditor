@@ -5,7 +5,7 @@ public class ShapeList {
 
     public void add(Shape shape) {
 
-        ShapeListItem item = new ShapeListItem(shape);
+        PrivateShapeListItem item = new PrivateShapeListItem(shape);
 
         if(getFirst() == null) {
             // no items in the list
@@ -18,9 +18,9 @@ public class ShapeList {
         }
     }
 
-    public void addBefore(Shape s, ShapeListItem before) {
+    public void addBefore(Shape s, PrivateShapeListItem before) {
 
-        ShapeListItem newItem = new ShapeListItem(s);
+        PrivateShapeListItem newItem = new PrivateShapeListItem(s);
 
         newItem.setNext(before);
 
@@ -34,7 +34,7 @@ public class ShapeList {
         before.setPrev(newItem);
     }
 
-    public void remove(ShapeListItem item) {
+    public void remove(PrivateShapeListItem item) {
         if(item == getFirst() && item == getLast()) {
             setFirst(null);
             setLast(null);
@@ -50,23 +50,23 @@ public class ShapeList {
         }
     }
 
-    public ShapeListItem getFirst() {
+    public PrivateShapeListItem getFirst() {
         return first;
     }
 
-    public ShapeListItem getLast() {
+    public PrivateShapeListItem getLast() {
         return last;
     }
 
-    private void setFirst(ShapeListItem item) {
+    private void setFirst(PrivateShapeListItem item) {
         first = item;
     }
 
-    private void setLast(ShapeListItem item) {
+    private void setLast(PrivateShapeListItem item) {
         last = item;
     }
 
-    private ShapeListItem first;
-    private ShapeListItem last;
+    private PrivateShapeListItem first;
+    private PrivateShapeListItem last;
 };
 
