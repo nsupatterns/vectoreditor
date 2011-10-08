@@ -5,23 +5,23 @@ public class ShapeList {
 
     public void add(Shape shape) {
 
-        PrivateShapeListItem item = new PrivateShapeListItem(shape);
+        ShapeListNode node = new ShapeListNode(shape);
 
         if(first == null) {
-            // no items in the list
-            first = item;
-            last = item;
+            // no nodes in the list
+            first = node;
+            last = node;
         } else {
-            last.setNext(item);
-            item.setPrev(last);
-            last = item;
+            last.setNext(node);
+            node.setPrev(last);
+            last = node;
         }
     }
 
-    public void addBefore(Shape s, ShapeListItem bef) {
+    public void addBefore(Shape s, ShapeListIterator bef) {
 
-        PrivateShapeListItem before = bef.getPrivateItem();
-        PrivateShapeListItem newItem = new PrivateShapeListItem(s);
+        ShapeListNode before = bef.getNode();
+        ShapeListNode newItem = new ShapeListNode(s);
 
         newItem.setNext(before);
 
@@ -35,33 +35,33 @@ public class ShapeList {
         before.setPrev(newItem);
     }
 
-    public void remove(ShapeListItem i) {
-        PrivateShapeListItem item = i.getPrivateItem();
+    public void remove(ShapeListIterator i) {
+        ShapeListNode node = i.getNode();
 
-        if(item == first && item == last) {
+        if(node == first && node == last) {
             first = null;
             last = null;
-        } else if(item == first) {
-            first = item.getNext();
-            item.getNext().setPrev(null);
-        } else if(item == last) {
-            last = item.getPrev();
-            item.getPrev().setNext(null);
+        } else if(node == first) {
+            first = node.getNext();
+            node.getNext().setPrev(null);
+        } else if(node == last) {
+            last = node.getPrev();
+            node.getPrev().setNext(null);
         } else {
-            item.getPrev().setNext(item.getNext());
-            item.getNext().setPrev(item.getPrev());
+            node.getPrev().setNext(node.getNext());
+            node.getNext().setPrev(node.getPrev());
         }
     }
 
-    public ShapeListItem getFirst() {
-        return new ShapeListItem(first);
+    public ShapeListIterator getFirst() {
+        return new ShapeListIterator(first);
     }
 
-    public ShapeListItem getLast() {
-        return new ShapeListItem(last);
+    public ShapeListIterator getLast() {
+        return new ShapeListIterator(last);
     }
 
-    private PrivateShapeListItem first;
-    private PrivateShapeListItem last;
+    private ShapeListNode first;
+    private ShapeListNode last;
 };
 
