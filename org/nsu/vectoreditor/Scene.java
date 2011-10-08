@@ -4,77 +4,83 @@ package org.nsu.vectoreditor;
 public class Scene extends java.awt.Component {
 
     public void paint(java.awt.Graphics graphics) {
-        Shape shape = first;
-        while(shape != null) {
-            shape.draw(graphics);
-            shape = shape.next;
+        ShapeListItem item = first;
+        while(item != null) {
+            item.shape.draw(graphics);
+            item = item.next;
         }
     }
 
     public void addShape(Shape shape) {
 
+        ShapeListItem item = new ShapeListItem();
+        item.shape = shape;
+
         if(first == null) {
             // no items in the list
-            first = shape;
-            last = shape;
+            first = item;
+            last = item;
         } else {
-            last.next = shape;
-            shape.prev = last;
-            last = shape;
+            last.next = item;
+            item.prev = last;
+            last = item;
         }
     }
 
 
     public void addShapeBefore(Shape s, Shape before) {
 
-        Shape shape = first;
-        while(shape != null) {
-            if(shape == before) {
+        ShapeListItem newItem = new ShapeListItem();
+        newItem.shape = s;
 
-                s.next = shape;
+        ShapeListItem item = first;
+        while(item != null) {
+            if(item.shape == before) {
 
-                if(shape.prev != null) {
-                    shape.prev.next = s;
-                    s.prev = shape.prev;
+                newItem.next = item;
+
+                if(item.prev != null) {
+                    item.prev.next = newItem;
+                    newItem.prev = item.prev;
                 } else {
-                    first = s;
+                    first = newItem;
                 }
 
-                shape.prev = s;
+                item.prev = newItem;
                 break;
             }
 
-            shape = shape.next;
+            item = item.next;
         }
     }
 
     public void removeShape(Shape s) {
-        Shape shape = first;
 
-        while(shape != null) {
+        ShapeListItem item = first;
+        while(item != null) {
 
-            if(shape == s) {
-                if(shape == first && shape == last) {
+            if(item.shape == s) {
+                if(item == first && item == last) {
                     first = null;
                     last = null;
-                } else if(shape == first) {
-                    first = shape.next;
-                    shape.next.prev = null;
-                } else if(shape == last) {
-                    last = shape.prev;
-                    shape.prev.next = null;
+                } else if(item == first) {
+                    first = item.next;
+                    item.next.prev = null;
+                } else if(item == last) {
+                    last = item.prev;
+                    item.prev.next = null;
                 } else {
-                    shape.prev.next = shape.next;
-                    shape.next.prev = shape.prev;
+                    item.prev.next = item.next;
+                    item.next.prev = item.prev;
                 }
             }
 
-            shape = shape.next;
+            item = item.next;
         }
     }
 
 
-    Shape first;
-    Shape last;
+    ShapeListItem first;
+    ShapeListItem last;
 }
 
