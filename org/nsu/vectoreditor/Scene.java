@@ -14,7 +14,7 @@ public class Scene extends java.awt.Component {
     public void addShape(Shape shape) {
 
         if(first == null) {
-            // not items in the list
+            // no items in the list
             first = shape;
             last = shape;
         } else {
