@@ -3,29 +3,31 @@ package org.nsu.vectoreditor;
 
 public class ShapeListIterator {
 
-    public ShapeListIterator(ShapeListNode i) {
-        node = i;
+    public ShapeListIterator(Shape [] arr, int i) {
+        array = arr;
+        index = i;
     }
 
     public Shape getShape() {
         assert(!isEnd());
-        return node.getShape();
+        return array[index];
     }
 
     public ShapeListIterator getNext() {
         assert(!isEnd());
-        return new ShapeListIterator(node.getNext());
+        return new ShapeListIterator(array, index + 1);
     }
 
     public boolean isEnd() {
-        return node == null;
+        return array == null || index >= array.length;
     }
 
     // for internal use only
-    public ShapeListNode getNode() {
-        return node;
+    public int getIndex() {
+        return index;
     }
 
-    private ShapeListNode node;
+    Shape [] array;
+    private int index;
 };
 

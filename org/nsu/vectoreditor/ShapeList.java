@@ -4,64 +4,60 @@ package org.nsu.vectoreditor;
 public class ShapeList {
 
     public void add(Shape shape) {
-
-        ShapeListNode node = new ShapeListNode(shape);
-
-        if(first == null) {
-            // no nodes in the list
-            first = node;
-            last = node;
-        } else {
-            last.setNext(node);
-            node.setPrev(last);
-            last = node;
+        if(array == null) {
+            array = new Shape[1];
+            array[0] = shape;
+            return;
         }
+
+        Shape [] newArray = new Shape[array.length + 1];
+        for(int i = 0; i < array.length; ++i) {
+            newArray[i] = array[i];
+        }
+
+        newArray[array.length] = shape;
+        array = newArray;
     }
 
     public void addBefore(Shape s, ShapeListIterator bef) {
 
-        ShapeListNode before = bef.getNode();
-        ShapeListNode newItem = new ShapeListNode(s);
+        int index = bef.getIndex();
 
-        newItem.setNext(before);
-
-        if(before.getPrev() != null) {
-            before.getPrev().setNext(newItem);
-            newItem.setPrev(before.getPrev());
-        } else {
-            first = newItem;
+        Shape [] newArray = new Shape[array.length + 1];
+        for(int i = 0; i < index; ++i) {
+            newArray[i] = array[i];
         }
 
-        before.setPrev(newItem);
+        newArray[index] = s;
+
+        for(int i = index; i < array.length; ++i) {
+            newArray[i + 1] = array[i];
+        }
+
+        array = newArray;
     }
 
-    public void remove(ShapeListIterator i) {
-        ShapeListNode node = i.getNode();
+    public void remove(ShapeListIterator it) {
 
-        if(node == first && node == last) {
-            first = null;
-            last = null;
-        } else if(node == first) {
-            first = node.getNext();
-            node.getNext().setPrev(null);
-        } else if(node == last) {
-            last = node.getPrev();
-            node.getPrev().setNext(null);
-        } else {
-            node.getPrev().setNext(node.getNext());
-            node.getNext().setPrev(node.getPrev());
+        int index = it.getIndex();
+
+        Shape [] newArray = new Shape[array.length - 1];
+
+        for(int i = 0; i < index; ++i) {
+            newArray[i] = array[i];
         }
+
+        for(int i = index + 1; i < array.length; ++i) {
+            newArray[i - 1] = array[i];
+        }
+
+        array = newArray;
     }
 
     public ShapeListIterator getFirst() {
-        return new ShapeListIterator(first);
+        return new ShapeListIterator(array, 0);
     }
 
-    public ShapeListIterator getLast() {
-        return new ShapeListIterator(last);
-    }
-
-    private ShapeListNode first;
-    private ShapeListNode last;
+    private Shape [] array;
 };
 
