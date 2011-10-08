@@ -4,82 +4,77 @@ package org.nsu.vectoreditor;
 public class Scene extends java.awt.Component {
 
     public void paint(java.awt.Graphics graphics) {
-        ShapeListItem item = first;
-        while(item != null) {
-            item.shape.draw(graphics);
-            item = item.nextItem;
+        Shape shape = first;
+        while(shape != null) {
+            shape.draw(graphics);
+            shape = shape.next;
         }
     }
 
     public void addShape(Shape shape) {
 
-        ShapeListItem item = new ShapeListItem();
-        item.shape = shape;
-
         if(first == null) {
             // not items in the list
-            first = item;
-            last = item;
+            first = shape;
+            last = shape;
         } else {
-            last.nextItem = item;
-            item.prevItem = last;
-            last = item;
+            last.next = shape;
+            shape.prev = last;
+            last = shape;
         }
     }
 
 
-    public void addShapeBefore(Shape shape, Shape before) {
+    public void addShapeBefore(Shape s, Shape before) {
 
-        ShapeListItem newItem = new ShapeListItem();
-        newItem.shape = shape;
+        Shape shape = first;
+        while(shape != null) {
+            if(shape == before) {
 
-        ShapeListItem item = first;
-        while(item != null) {
-            if(item.shape == before) {
+                s.next = shape;
 
-                newItem.nextItem = item;
-
-                if(item.prevItem != null) {
-                    item.prevItem.nextItem = newItem;
-                    newItem.prevItem = item.prevItem;
+                if(shape.prev != null) {
+                    shape.prev.next = s;
+                    s.prev = shape.prev;
                 } else {
-                    first = newItem;
+                    first = s;
                 }
 
-                item.prevItem = newItem;
+                shape.prev = s;
                 break;
             }
 
-            item = item.nextItem;
+            shape = shape.next;
         }
     }
 
-    public void removeShape(Shape shape) {
-        ShapeListItem item = first;
-        while(item != null) {
+    public void removeShape(Shape s) {
+        Shape shape = first;
 
-            if(item.shape == shape) {
-                if(item == first && item == last) {
+        while(shape != null) {
+
+            if(shape == s) {
+                if(shape == first && shape == last) {
                     first = null;
                     last = null;
-                } else if(item == first) {
-                    first = item.nextItem;
-                    item.nextItem.prevItem = null;
-                } else if(item == last) {
-                    last = item.prevItem;
-                    item.prevItem.nextItem = null;
+                } else if(shape == first) {
+                    first = shape.next;
+                    shape.next.prev = null;
+                } else if(shape == last) {
+                    last = shape.prev;
+                    shape.prev.next = null;
                 } else {
-                    item.prevItem.nextItem = item.nextItem;
-                    item.nextItem.prevItem = item.prevItem;
+                    shape.prev.next = shape.next;
+                    shape.next.prev = shape.prev;
                 }
             }
 
-            item = item.nextItem;
+            shape = shape.next;
         }
     }
 
 
-    ShapeListItem first;
-    ShapeListItem last;
+    Shape first;
+    Shape last;
 }
 

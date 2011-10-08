@@ -8,6 +8,7 @@ public class Main {
         Shape circle = new Circle(100, 150, 80);
         Shape triangle = new Triangle(250, 250, 400, 300, 100, 350);
         Shape dummy = new Circle(10, 10, 5);
+        Shape line = new Line(10, 10, 500, 500);
 
         Scene scene = new Scene();
         scene.addShape(rect);
@@ -15,6 +16,7 @@ public class Main {
         scene.addShapeBefore(dummy, triangle);
         scene.removeShape(dummy);
         scene.addShapeBefore(circle, triangle);
+        scene.addShape(line);
 
         MainWindow mainWindow = new MainWindow(scene);
         mainWindow.setSize(800, 600);
