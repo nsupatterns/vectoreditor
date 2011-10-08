@@ -12,7 +12,7 @@ public class Main {
         Scene scene = new Scene();
         scene.addShape(rect);
         scene.addShape(triangle);
-        scene.addShapeBefore(triangle, dummy);
+        scene.addShapeBefore(dummy, triangle);
         scene.removeShape(dummy);
         scene.addShapeBefore(circle, triangle);
 
