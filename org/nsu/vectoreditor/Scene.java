@@ -6,23 +6,22 @@ public class Scene extends java.awt.Component {
     public void paint(java.awt.Graphics graphics) {
         ShapeListItem item = first;
         while(item != null) {
-            item.shape.draw(graphics);
-            item = item.next;
+            item.getShape().draw(graphics);
+            item = item.getNext();
         }
     }
 
     public void addShape(Shape shape) {
 
-        ShapeListItem item = new ShapeListItem();
-        item.shape = shape;
+        ShapeListItem item = new ShapeListItem(shape);
 
         if(first == null) {
             // no items in the list
             first = item;
             last = item;
         } else {
-            last.next = item;
-            item.prev = last;
+            last.setNext(item);
+            item.setPrev(last);
             last = item;
         }
     }
@@ -30,27 +29,26 @@ public class Scene extends java.awt.Component {
 
     public void addShapeBefore(Shape s, Shape before) {
 
-        ShapeListItem newItem = new ShapeListItem();
-        newItem.shape = s;
+        ShapeListItem newItem = new ShapeListItem(s);
 
         ShapeListItem item = first;
         while(item != null) {
-            if(item.shape == before) {
+            if(item.getShape() == before) {
 
-                newItem.next = item;
+                newItem.setNext(item);
 
-                if(item.prev != null) {
-                    item.prev.next = newItem;
-                    newItem.prev = item.prev;
+                if(item.getPrev() != null) {
+                    item.getPrev().setNext(newItem);
+                    newItem.setPrev(item.getPrev());
                 } else {
                     first = newItem;
                 }
 
-                item.prev = newItem;
+                item.setPrev(newItem);
                 break;
             }
 
-            item = item.next;
+            item = item.getNext();
         }
     }
 
@@ -59,23 +57,23 @@ public class Scene extends java.awt.Component {
         ShapeListItem item = first;
         while(item != null) {
 
-            if(item.shape == s) {
+            if(item.getShape() == s) {
                 if(item == first && item == last) {
                     first = null;
                     last = null;
                 } else if(item == first) {
-                    first = item.next;
-                    item.next.prev = null;
+                    first = item.getNext();
+                    item.getNext().setPrev(null);
                 } else if(item == last) {
-                    last = item.prev;
-                    item.prev.next = null;
+                    last = item.getPrev();
+                    item.getPrev().setNext(null);
                 } else {
-                    item.prev.next = item.next;
-                    item.next.prev = item.prev;
+                    item.getPrev().setNext(item.getNext());
+                    item.getNext().setPrev(item.getPrev());
                 }
             }
 
-            item = item.next;
+            item = item.getNext();
         }
     }
 
