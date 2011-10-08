@@ -3,8 +3,12 @@ package org.nsu.vectoreditor;
 
 public class Scene extends java.awt.Component {
 
+    public Scene() {
+        shapes = new ShapeList();
+    }
+
     public void paint(java.awt.Graphics graphics) {
-        ShapeListItem item = first;
+        ShapeListItem item = shapes.getFirst();
         while(item != null) {
             item.getShape().draw(graphics);
             item = item.getNext();
@@ -15,14 +19,14 @@ public class Scene extends java.awt.Component {
 
         ShapeListItem item = new ShapeListItem(shape);
 
-        if(first == null) {
+        if(shapes.getFirst() == null) {
             // no items in the list
-            first = item;
-            last = item;
+            shapes.setFirst(item);
+            shapes.setLast(item);
         } else {
-            last.setNext(item);
-            item.setPrev(last);
-            last = item;
+            shapes.getLast().setNext(item);
+            item.setPrev(shapes.getLast());
+            shapes.setLast(item);
         }
     }
 
@@ -31,7 +35,7 @@ public class Scene extends java.awt.Component {
 
         ShapeListItem newItem = new ShapeListItem(s);
 
-        ShapeListItem item = first;
+        ShapeListItem item = shapes.getFirst();
         while(item != null) {
             if(item.getShape() == before) {
 
@@ -41,7 +45,7 @@ public class Scene extends java.awt.Component {
                     item.getPrev().setNext(newItem);
                     newItem.setPrev(item.getPrev());
                 } else {
-                    first = newItem;
+                    shapes.setFirst(newItem);
                 }
 
                 item.setPrev(newItem);
@@ -54,18 +58,18 @@ public class Scene extends java.awt.Component {
 
     public void removeShape(Shape s) {
 
-        ShapeListItem item = first;
+        ShapeListItem item = shapes.getFirst();
         while(item != null) {
 
             if(item.getShape() == s) {
-                if(item == first && item == last) {
-                    first = null;
-                    last = null;
-                } else if(item == first) {
-                    first = item.getNext();
+                if(item == shapes.getFirst() && item == shapes.getLast()) {
+                    shapes.setFirst(null);
+                    shapes.setLast(null);
+                } else if(item == shapes.getFirst()) {
+                    shapes.setFirst(item.getNext());
                     item.getNext().setPrev(null);
-                } else if(item == last) {
-                    last = item.getPrev();
+                } else if(item == shapes.getLast()) {
+                    shapes.setLast(item.getPrev());
                     item.getPrev().setNext(null);
                 } else {
                     item.getPrev().setNext(item.getNext());
@@ -77,8 +81,6 @@ public class Scene extends java.awt.Component {
         }
     }
 
-
-    ShapeListItem first;
-    ShapeListItem last;
+    ShapeList shapes;
 }
 
