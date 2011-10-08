@@ -8,14 +8,17 @@ public class ShapeListItem {
     }
 
     public Shape getShape() {
+        assert(!isEnd());
         return item.getShape();
     }
 
     public ShapeListItem getNext() {
-        if(item.getNext() == null)
-            return null;
-
+        assert(!isEnd());
         return new ShapeListItem(item.getNext());
+    }
+
+    public boolean isEnd() {
+        return item == null;
     }
 
     // for internal use only

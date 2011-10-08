@@ -54,16 +54,10 @@ public class ShapeList {
     }
 
     public ShapeListItem getFirst() {
-        if(first == null)
-            return null;
-
         return new ShapeListItem(first);
     }
 
     public ShapeListItem getLast() {
-        if(last == null)
-            return null;
-
         return new ShapeListItem(last);
     }
 

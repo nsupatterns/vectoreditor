@@ -9,7 +9,7 @@ public class Scene extends java.awt.Component {
 
     public void paint(java.awt.Graphics graphics) {
         ShapeListItem item = shapes.getFirst();
-        while(item != null) {
+        while(!item.isEnd()) {
             item.getShape().draw(graphics);
             item = item.getNext();
         }
@@ -23,7 +23,7 @@ public class Scene extends java.awt.Component {
     public void addShapeBefore(Shape s, Shape before) {
 
         ShapeListItem item = shapes.getFirst();
-        while(item != null) {
+        while(!item.isEnd()) {
             if(item.getShape() == before) {
                 shapes.addBefore(s, item);
                 break;
@@ -36,7 +36,7 @@ public class Scene extends java.awt.Component {
     public void removeShape(Shape s) {
 
         ShapeListItem item = shapes.getFirst();
-        while(item != null) {
+        while(item.isEnd()) {
             if(item.getShape() == s) {
                 shapes.remove(item);
             }
