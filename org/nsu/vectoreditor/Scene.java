@@ -16,39 +16,16 @@ public class Scene extends java.awt.Component {
     }
 
     public void addShape(Shape shape) {
-
-        ShapeListItem item = new ShapeListItem(shape);
-
-        if(shapes.getFirst() == null) {
-            // no items in the list
-            shapes.setFirst(item);
-            shapes.setLast(item);
-        } else {
-            shapes.getLast().setNext(item);
-            item.setPrev(shapes.getLast());
-            shapes.setLast(item);
-        }
+        shapes.add(shape);
     }
 
 
     public void addShapeBefore(Shape s, Shape before) {
 
-        ShapeListItem newItem = new ShapeListItem(s);
-
         ShapeListItem item = shapes.getFirst();
         while(item != null) {
             if(item.getShape() == before) {
-
-                newItem.setNext(item);
-
-                if(item.getPrev() != null) {
-                    item.getPrev().setNext(newItem);
-                    newItem.setPrev(item.getPrev());
-                } else {
-                    shapes.setFirst(newItem);
-                }
-
-                item.setPrev(newItem);
+                shapes.addBefore(s, item);
                 break;
             }
 
@@ -60,21 +37,8 @@ public class Scene extends java.awt.Component {
 
         ShapeListItem item = shapes.getFirst();
         while(item != null) {
-
             if(item.getShape() == s) {
-                if(item == shapes.getFirst() && item == shapes.getLast()) {
-                    shapes.setFirst(null);
-                    shapes.setLast(null);
-                } else if(item == shapes.getFirst()) {
-                    shapes.setFirst(item.getNext());
-                    item.getNext().setPrev(null);
-                } else if(item == shapes.getLast()) {
-                    shapes.setLast(item.getPrev());
-                    item.getPrev().setNext(null);
-                } else {
-                    item.getPrev().setNext(item.getNext());
-                    item.getNext().setPrev(item.getPrev());
-                }
+                shapes.remove(item);
             }
 
             item = item.getNext();
