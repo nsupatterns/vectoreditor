@@ -7,19 +7,20 @@ public class ShapeList {
 
         PrivateShapeListItem item = new PrivateShapeListItem(shape);
 
-        if(getFirst() == null) {
+        if(first == null) {
             // no items in the list
-            setFirst(item);
-            setLast(item);
+            first = item;
+            last = item;
         } else {
-            getLast().setNext(item);
-            item.setPrev(getLast());
-            setLast(item);
+            last.setNext(item);
+            item.setPrev(last);
+            last = item;
         }
     }
 
-    public void addBefore(Shape s, PrivateShapeListItem before) {
+    public void addBefore(Shape s, ShapeListItem bef) {
 
+        PrivateShapeListItem before = bef.getPrivateItem();
         PrivateShapeListItem newItem = new PrivateShapeListItem(s);
 
         newItem.setNext(before);
@@ -28,21 +29,23 @@ public class ShapeList {
             before.getPrev().setNext(newItem);
             newItem.setPrev(before.getPrev());
         } else {
-            setFirst(newItem);
+            first = newItem;
         }
 
         before.setPrev(newItem);
     }
 
-    public void remove(PrivateShapeListItem item) {
-        if(item == getFirst() && item == getLast()) {
-            setFirst(null);
-            setLast(null);
-        } else if(item == getFirst()) {
-            setFirst(item.getNext());
+    public void remove(ShapeListItem i) {
+        PrivateShapeListItem item = i.getPrivateItem();
+
+        if(item == first && item == last) {
+            first = null;
+            last = null;
+        } else if(item == first) {
+            first = item.getNext();
             item.getNext().setPrev(null);
-        } else if(item == getLast()) {
-            setLast(item.getPrev());
+        } else if(item == last) {
+            last = item.getPrev();
             item.getPrev().setNext(null);
         } else {
             item.getPrev().setNext(item.getNext());
@@ -50,20 +53,18 @@ public class ShapeList {
         }
     }
 
-    public PrivateShapeListItem getFirst() {
-        return first;
+    public ShapeListItem getFirst() {
+        if(first == null)
+            return null;
+
+        return new ShapeListItem(first);
     }
 
-    public PrivateShapeListItem getLast() {
-        return last;
-    }
+    public ShapeListItem getLast() {
+        if(last == null)
+            return null;
 
-    private void setFirst(PrivateShapeListItem item) {
-        first = item;
-    }
-
-    private void setLast(PrivateShapeListItem item) {
-        last = item;
+        return new ShapeListItem(last);
     }
 
     private PrivateShapeListItem first;
