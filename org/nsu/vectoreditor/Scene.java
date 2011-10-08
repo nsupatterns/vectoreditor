@@ -36,7 +36,7 @@ public class Scene extends java.awt.Component {
     public void removeShape(Shape s) {
 
         ShapeListItem item = shapes.getFirst();
-        while(item.isEnd()) {
+        while(!item.isEnd()) {
             if(item.getShape() == s) {
                 shapes.remove(item);
             }
