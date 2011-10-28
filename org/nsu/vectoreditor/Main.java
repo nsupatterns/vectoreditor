@@ -10,7 +10,9 @@ public class Main {
         Shape dummy = new Circle(10, 10, 5);
         Shape line = new Line(10, 10, 500, 500);
 
-        Scene scene = new Scene();
+        ShapeList shapes = new ShapeList();
+        Scene scene = new Scene(shapes);
+        scene.selectTool(new LineTool(shapes));
         scene.addShape(rect);
         scene.addShape(triangle);
         scene.addShapeBefore(dummy, triangle);
