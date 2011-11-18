@@ -2,7 +2,7 @@
 package org.nsu.vectoreditor;
 
 public class MainWindow extends java.awt.Frame {
-    public MainWindow(Scene scene) {
+    public MainWindow(final Scene scene, final ShapeList shapes) {
         super("Vector editor");
 
         // handle window close event
@@ -17,10 +17,32 @@ public class MainWindow extends java.awt.Frame {
 
         java.awt.Panel buttonPanel = new java.awt.Panel();
         add(buttonPanel, java.awt.BorderLayout.WEST);
-        buttonPanel.setLayout(new javax.swing.BoxLayout(buttonPanel, javax.swing.BoxLayout.Y_AXIS));
-        buttonPanel.add(new java.awt.Button("Line"));
-        buttonPanel.add(new java.awt.Button("Rectangle"));
-        buttonPanel.add(new java.awt.Button("Circle"));
+        buttonPanel.setLayout(new javax.swing.BoxLayout(buttonPanel, javax.swing.BoxLayout.Y_AXIS));	
+
+        java.awt.Button lineButton = new java.awt.Button("Line");
+        lineButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent event) {
+                scene.selectTool(new LineTool(shapes));
+            }
+        });
+
+        java.awt.Button rectangleButton = new java.awt.Button("Rectangle");
+        rectangleButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent event) {
+                scene.selectTool(new RectangleTool(shapes));
+            }
+        });
+
+        java.awt.Button circleButton = new java.awt.Button("Circle");
+        circleButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent event) {
+                scene.selectTool(new CircleTool(shapes));
+            }
+        });
+
+        buttonPanel.add(lineButton);
+        buttonPanel.add(rectangleButton);
+        buttonPanel.add(circleButton);
         buttonPanel.add(javax.swing.Box.createVerticalGlue());
     }
 }

@@ -10,7 +10,7 @@ public class Circle extends Shape {
     }
 
     public void draw(java.awt.Graphics canvas) {
-        canvas.drawOval(x - radius, y - radius, x + radius, y + radius);
+        canvas.drawOval(x - radius, y - radius, radius * 2, radius * 2);
     }
 
     private int x;
