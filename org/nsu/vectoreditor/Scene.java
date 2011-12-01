@@ -2,7 +2,7 @@
 package org.nsu.vectoreditor;
 
 public class Scene
-    extends java.awt.Component
+    extends java.awt.Panel
     implements java.awt.event.MouseListener, 
                java.awt.event.MouseMotionListener {
 
@@ -14,15 +14,24 @@ public class Scene
     }
 
     public void paint(java.awt.Graphics graphics) {
+
+        if(bufferWidth != getSize().width || bufferHeight != getSize().height)
+            initBuffer();
+
+        java.awt.Graphics bufGraphics = buffer.getGraphics();
+        bufGraphics.clearRect(0, 0, bufferWidth, bufferHeight);
+
         ShapeListIterator it = shapes.getFirst();
         while(!it.isEnd()) {
-            it.getShape().draw(graphics);
+            it.getShape().draw(bufGraphics);
             it = it.getNext();
         }
 
         if(selectedTool != null) {
-            selectedTool.draw(graphics);
+            selectedTool.draw(bufGraphics);
         }
+
+        graphics.drawImage(buffer, 0, 0, this);
     }
 
     public void addShape(Shape shape) {
@@ -105,6 +114,27 @@ public class Scene
             repaint();
         }
     }
+
+
+    public void update(java.awt.Graphics graphics) {
+        paint(graphics);
+    }
+
+    private void initBuffer() {
+        bufferWidth = getSize().width;
+        bufferHeight = getSize().height;
+
+        if(buffer != null) {
+            buffer.flush();
+        }
+
+        buffer = createImage(bufferWidth, bufferHeight);
+    }
+
+    
+    java.awt.Image buffer;
+    int bufferWidth;
+    int bufferHeight;
 
     ShapeList shapes;
     Tool selectedTool;
