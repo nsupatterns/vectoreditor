@@ -1,6 +1,78 @@
 
 package org.nsu.vectoreditor;
 
+
+class CircleLeftTopSelectPoint extends SelectPoint {
+
+    CircleLeftTopSelectPoint(Circle c) {
+        circle = c;
+    }
+
+    public Point getPos() {
+        Point center = circle.getCenter();
+        int radius = circle.getRadius();
+        return new Point(center.x - radius, center.y - radius);
+    }
+
+    public void setPos(Point newPos) {
+    }
+
+    private Circle circle;
+}
+
+class CircleRightTopSelectPoint extends SelectPoint {
+    CircleRightTopSelectPoint(Circle c) {
+        circle = c;
+    }
+
+    public Point getPos() {
+        Point center = circle.getCenter();
+        int radius = circle.getRadius();
+        return new Point(center.x + radius, center.y - radius);
+    }
+
+    public void setPos(Point newPos) {
+    }
+
+    private Circle circle;
+}
+
+class CircleLeftBottomSelectPoint extends SelectPoint {
+    
+    CircleLeftBottomSelectPoint(Circle c) {
+        circle = c;
+    }
+
+    public Point getPos() {
+        Point center = circle.getCenter();
+        int radius = circle.getRadius();
+        return new Point(center.x - radius, center.y + radius);
+    }
+
+    public void setPos(Point newPos) {
+    }
+
+    private Circle circle;
+}
+
+class CircleRightBottomSelectPoint extends SelectPoint {
+    CircleRightBottomSelectPoint(Circle c) {
+        circle = c;
+    }
+
+    public Point getPos() {
+        Point center = circle.getCenter();
+        int radius = circle.getRadius();
+        return new Point(center.x + radius, center.y + radius);
+    }
+
+    public void setPos(Point newPos) {
+    }
+
+    private Circle circle;
+}
+
+
 public class Circle extends Shape {
 
     public Circle(int px, int py, int pradius) {
@@ -18,6 +90,10 @@ public class Circle extends Shape {
         y += dy;
     }
 
+    public void visit(ShapeVisitor visitor) {
+        visitor.visitCircle(this);
+    }
+
     public boolean trySelect(int px, int py) {
         return (px - x) * (px - x) + (py - y) * (py - y) <= radius * radius;
     }
@@ -26,19 +102,19 @@ public class Circle extends Shape {
         return 4;
     }
     
-    public Point getSelectPoint(int index) {
+    public SelectPoint getSelectPoint(int index) {
         switch(index) {
         case 0:
-            return new Point(x - radius, y - radius);
+            return new CircleLeftTopSelectPoint(this);
         case 1:
-            return new Point(x - radius, y + radius);
+            return new CircleLeftBottomSelectPoint(this);
         case 2:
-            return new Point(x + radius, y + radius);
+            return new CircleRightTopSelectPoint(this);
         case 3:
-            return new Point(x + radius, y - radius);
+            return new CircleRightBottomSelectPoint(this);
         default:
             assert(false);
-            return new Point(0, 0);
+            return null;
         }
     }
 
@@ -95,6 +171,23 @@ public class Circle extends Shape {
             assert(false);
             return new Point(0, 0);
         }
+    }
+
+    public Point getCenter() {
+        return new Point(x, y);
+    }
+
+    public void setCenter(Point p) {
+        x = p.x;
+        y = p.y;
+    }
+
+    public int getRadius() {
+        return radius;
+    }
+
+    public void setRadius(int r) {
+        radius = r;
     }
 
     private int x;

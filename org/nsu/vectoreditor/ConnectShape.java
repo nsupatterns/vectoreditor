@@ -18,11 +18,14 @@ public class ConnectShape extends Shape {
         (new Line(p1.x, p1.y, p2.x, p2.y)).draw(canvas);
     }
 
+    public void visit(ShapeVisitor visitor) {
+        visitor.visitConnect(this);
+    }
+
     public void move(int dx, int dy) {}
     public boolean trySelect(int x, int y) { return false; }
     public int getSelectPointsCount() { return 0; }
-    public Point getSelectPoint(int index) { return new Point(0, 0); }
-    public void setPoint(int index, int x, int y) {}
+    public SelectPoint getSelectPoint(int index) { return null; }
 
     public int getConnectPointsCount() { return 0; }
     public Point getConnectPoint(int index) { return new Point(0, 0); }

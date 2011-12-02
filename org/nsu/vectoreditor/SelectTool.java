@@ -62,11 +62,9 @@ class SelectToolStatePressed extends SelectToolState {
             }
             return new SelectToolStateStart(shapes);
 
-        } else {
-            // select in rectangle
-            // TODO
-            return new SelectToolStateStart(shapes);
         }
+
+        return new SelectToolStateStart(shapes);
     }
 
     public SelectToolState onMouseMove(int x, int y) {
@@ -97,10 +95,10 @@ class SelectToolStateSelected extends SelectToolState {
 
             int npoints = s.getSelectPointsCount();
             for(int i = 0; i < npoints; ++i) {
-                Point p = s.getSelectPoint(i);
+                SelectPoint p = s.getSelectPoint(i);
 
-                canvas.fillRect(p.x - selectPointSize,
-                                p.y - selectPointSize,
+                canvas.fillRect(p.getPos().x - selectPointSize,
+                                p.getPos().y - selectPointSize,
                                 selectPointSize * 2,
                                 selectPointSize * 2);
             }
@@ -116,16 +114,15 @@ class SelectToolStateSelected extends SelectToolState {
 
             int npoints = s.getSelectPointsCount();
             for(int i = 0; i < npoints; ++i) {
-                Point p = s.getSelectPoint(i);
+                SelectPoint p = s.getSelectPoint(i);
 
                 if(Utils.pointInRectangle(new Point(x, y),
-                                          new Point(p.x - selectPointSize, p.y - selectPointSize),
-                                          new Point(p.x + selectPointSize, p.y + selectPointSize))) {
+                                          new Point(p.getPos().x - selectPointSize, p.getPos().y - selectPointSize),
+                                          new Point(p.getPos().x + selectPointSize, p.getPos().y + selectPointSize))) {
 
                     return new SelectToolStateMovePoint(shapes,
                                                         selectedShapes,
-                                                        s,
-                                                        i);
+                                                        p);
                 }
             }
 
@@ -165,12 +162,10 @@ class SelectToolStateMovePoint extends SelectToolState {
 
     SelectToolStateMovePoint(ShapeList list,
                              ShapeList selList,
-                             Shape sShape,
-                             int sIndex) {
+                             SelectPoint spoint) {
         shapes = list;
         selectedShapes = selList;
-        shape = sShape;
-        pointIndex = sIndex;
+        point = spoint;
     }
 
     public void draw(java.awt.Graphics canvas) {
@@ -180,10 +175,10 @@ class SelectToolStateMovePoint extends SelectToolState {
 
             int npoints = s.getSelectPointsCount();
             for(int i = 0; i < npoints; ++i) {
-                Point p = s.getSelectPoint(i);
+                SelectPoint p = s.getSelectPoint(i);
 
-                canvas.fillRect(p.x - selectPointSize,
-                                p.y - selectPointSize,
+                canvas.fillRect(p.getPos().x - selectPointSize,
+                                p.getPos().y - selectPointSize,
                                 selectPointSize * 2,
                                 selectPointSize * 2);
             }
@@ -201,14 +196,13 @@ class SelectToolStateMovePoint extends SelectToolState {
     }
 
     public SelectToolState onMouseMove(int x, int y) {
-        shape.setPoint(pointIndex, x, y);
+        point.setPos(new Point(x, y));
         return this;
     }
 
     private ShapeList shapes;
     private ShapeList selectedShapes;
-    private Shape shape;
-    private int pointIndex;
+    private SelectPoint point;
 }
 
 
@@ -233,10 +227,10 @@ class SelectToolStateMove extends SelectToolState {
 
             int npoints = s.getSelectPointsCount();
             for(int i = 0; i < npoints; ++i) {
-                Point p = s.getSelectPoint(i);
+                SelectPoint p = s.getSelectPoint(i);
 
-                canvas.fillRect(p.x - selectPointSize,
-                                p.y - selectPointSize,
+                canvas.fillRect(p.getPos().x - selectPointSize,
+                                p.getPos().y - selectPointSize,
                                 selectPointSize * 2,
                                 selectPointSize * 2);
             }
