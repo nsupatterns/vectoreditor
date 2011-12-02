@@ -19,6 +19,13 @@ public class MainWindow extends java.awt.Frame {
         add(buttonPanel, java.awt.BorderLayout.WEST);
         buttonPanel.setLayout(new javax.swing.BoxLayout(buttonPanel, javax.swing.BoxLayout.Y_AXIS));	
 
+        java.awt.Button selectButton = new java.awt.Button("Select");
+        selectButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent event) {
+                scene.selectTool(new SelectTool(shapes));
+            }
+        });
+
         java.awt.Button lineButton = new java.awt.Button("Line");
         lineButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent event) {
@@ -40,6 +47,7 @@ public class MainWindow extends java.awt.Frame {
             }
         });
 
+        buttonPanel.add(selectButton);
         buttonPanel.add(lineButton);
         buttonPanel.add(rectangleButton);
         buttonPanel.add(circleButton);

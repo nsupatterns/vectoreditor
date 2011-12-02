@@ -17,6 +17,60 @@ public class Rectangle extends Shape {
         canvas.drawLine(x1, y2, x1, y1);
     }
 
+    public void move(int dx, int dy) {
+        x1 += dx;
+        x2 += dx;
+        y1 += dy;
+        y2 += dy;
+    }
+
+    public boolean trySelect(int x, int y) {
+        return Utils.pointInRectangle(new Point(x, y), new Point(x1, y1), new Point(x2, y2));
+    }
+
+    public int getSelectPointsCount() {
+        return 4;
+    }
+    
+    public Point getSelectPoint(int index) {
+        switch(index) {
+        case 0:
+            return new Point(x1, y1);
+        case 1:
+            return new Point(x1, y2);
+        case 2:
+            return new Point(x2, y2);
+        case 3:
+            return new Point(x2, y1);
+        default:
+            assert(false);
+            return new Point(0, 0);
+        }
+    }
+
+    public void setPoint(int index, int x, int y) {
+        switch(index) {
+        case 0:
+            x1 = x;
+            y1 = y;
+            break;
+        case 1:
+            x1 = x;
+            y2 = y;
+            break;
+        case 2:
+            x2 = x;
+            y2 = y;
+            break;
+        case 3:
+            x2 = x;
+            y1 = y;
+            break;
+        default:
+            assert(false);
+        }
+    }
+
     int x1;
     int y1;
     int x2;

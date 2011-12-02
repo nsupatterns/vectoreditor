@@ -6,7 +6,7 @@ public class Main {
 
         ShapeList shapes = new ShapeList();
         Scene scene = new Scene(shapes);
-        scene.selectTool(new LineTool(shapes));
+        scene.selectTool(new SelectTool(shapes));
 
         MainWindow mainWindow = new MainWindow(scene, shapes);
         mainWindow.setSize(800, 600);
