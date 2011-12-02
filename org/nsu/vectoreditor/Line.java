@@ -59,6 +59,17 @@ public class Line extends Shape {
         }
     }
 
+    public int getConnectPointsCount() {
+        return 2;
+    }
+
+    public Point getConnectPoint(int index) {
+        if(index == 0)
+            return new Point(x1, y1);
+        else
+            return new Point(x2, y2);
+    }
+
 
     private int x1;
     private int y1;

@@ -9,5 +9,8 @@ public abstract class Shape {
     public abstract int getSelectPointsCount();
     public abstract Point getSelectPoint(int index);
     public abstract void setPoint(int index, int x, int y);
+
+    public abstract int getConnectPointsCount();
+    public abstract Point getConnectPoint(int index);
 }
 

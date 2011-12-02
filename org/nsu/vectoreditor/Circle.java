@@ -77,6 +77,26 @@ public class Circle extends Shape {
         y = y1 + (height / 2);
     }
 
+    public int getConnectPointsCount() {
+        return 4;
+    }
+    
+    public Point getConnectPoint(int index) {
+        switch(index) {
+        case 0:
+            return new Point(x - radius, y);
+        case 1:
+            return new Point(x + radius, y);
+        case 2:
+            return new Point(x, y + radius);
+        case 3:
+            return new Point(x, y - radius);
+        default:
+            assert(false);
+            return new Point(0, 0);
+        }
+    }
+
     private int x;
     private int y;
     private int radius;

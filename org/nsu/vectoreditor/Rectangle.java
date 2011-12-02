@@ -71,6 +71,26 @@ public class Rectangle extends Shape {
         }
     }
 
+    public int getConnectPointsCount() {
+        return 4;
+    }
+    
+    public Point getConnectPoint(int index) {
+        switch(index) {
+        case 0:
+            return new Point(x1, y1);
+        case 1:
+            return new Point(x1, y2);
+        case 2:
+            return new Point(x2, y2);
+        case 3:
+            return new Point(x2, y1);
+        default:
+            assert(false);
+            return new Point(0, 0);
+        }
+    }
+
     int x1;
     int y1;
     int x2;

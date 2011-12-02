@@ -47,10 +47,18 @@ public class MainWindow extends java.awt.Frame {
             }
         });
 
+        java.awt.Button connectButton = new java.awt.Button("Connect");
+        connectButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent event) {
+                scene.selectTool(new ConnectTool(shapes));
+            }
+        });
+
         buttonPanel.add(selectButton);
         buttonPanel.add(lineButton);
         buttonPanel.add(rectangleButton);
         buttonPanel.add(circleButton);
+        buttonPanel.add(connectButton);
         buttonPanel.add(javax.swing.Box.createVerticalGlue());
     }
 }
