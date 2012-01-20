@@ -137,6 +137,7 @@ class CircleLeftTopSelectPoint extends SelectPoint {
     }
 
     public void setPos(Point newPos) {
+        // TODO
     }
 
     private Circle circle;
@@ -154,6 +155,7 @@ class CircleRightTopSelectPoint extends SelectPoint {
     }
 
     public void setPos(Point newPos) {
+        // TODO
     }
 
     private Circle circle;
@@ -172,6 +174,7 @@ class CircleLeftBottomSelectPoint extends SelectPoint {
     }
 
     public void setPos(Point newPos) {
+        // TODO
     }
 
     private Circle circle;
@@ -189,6 +192,7 @@ class CircleRightBottomSelectPoint extends SelectPoint {
     }
 
     public void setPos(Point newPos) {
+        // TODO
     }
 
     private Circle circle;

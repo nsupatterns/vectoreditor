@@ -23,26 +23,6 @@ public class Circle extends Shape {
         visitor.visitCircle(this);
     }
 
-    public int getConnectPointsCount() {
-        return 4;
-    }
-    
-    public Point getConnectPoint(int index) {
-        switch(index) {
-        case 0:
-            return new Point(x - radius, y);
-        case 1:
-            return new Point(x + radius, y);
-        case 2:
-            return new Point(x, y + radius);
-        case 3:
-            return new Point(x, y - radius);
-        default:
-            assert(false);
-            return new Point(0, 0);
-        }
-    }
-
     public Point getCenter() {
         return new Point(x, y);
     }

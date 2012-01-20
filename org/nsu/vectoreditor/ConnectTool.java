@@ -20,31 +20,28 @@ class ConnectToolStateStart extends ConnectToolState {
 
     public void draw(java.awt.Graphics canvas) {
 
-        ShapeListIterator it = shapes.getFirst();
-        while(!it.isEnd()) {
-            Shape s = it.getShape();
+        ConnectPointsCollector collector = new ConnectPointsCollector();
+        shapes.visit(collector);
 
-            int npoints = s.getConnectPointsCount();
-            for(int i = 0; i < npoints; ++i) {
-                Point p = s.getConnectPoint(i);
+        java.util.LinkedList<ConnectPoint> points = collector.getPoints();
+        java.util.Iterator<ConnectPoint> it = points.iterator();
 
-                if(Utils.pointInRectangle(new Point(x, y),
-                                          new Point(p.x - selectPointSize,
-                                                    p.y - selectPointSize),
-                                          new Point(p.x + selectPointSize,
-                                                    p.y + selectPointSize))) {
+        while(it.hasNext()) {
+            Point p = it.next().getPos();
 
-                    canvas.fillRect(p.x - selectPointSize,
-                                    p.y - selectPointSize,
-                                    selectPointSize * 2,
-                                    selectPointSize * 2);
-                    
-                    break;
-                }
+            if(Utils.pointInRectangle(new Point(x, y),
+                                      new Point(p.x - selectPointSize,
+                                                p.y - selectPointSize),
+                                      new Point(p.x + selectPointSize,
+                                                p.y + selectPointSize))) {
 
+                canvas.fillRect(p.x - selectPointSize,
+                                p.y - selectPointSize,
+                                selectPointSize * 2,
+                                selectPointSize * 2);
+                
+                break;
             }
-
-            it = it.getNext();
         }
     }
 
@@ -53,26 +50,24 @@ class ConnectToolStateStart extends ConnectToolState {
     }
 
     public ConnectToolState onMouseUp(int x, int y) {
-        ShapeListIterator it = shapes.getFirst();
-        while(!it.isEnd()) {
-            Shape s = it.getShape();
+        ConnectPointsCollector collector = new ConnectPointsCollector();
+        shapes.visit(collector);
 
-            int npoints = s.getConnectPointsCount();
-            for(int i = 0; i < npoints; ++i) {
-                Point p = s.getConnectPoint(i);
+        java.util.LinkedList<ConnectPoint> points = collector.getPoints();
+        java.util.Iterator<ConnectPoint> it = points.iterator();
 
-                if(Utils.pointInRectangle(new Point(x, y),
-                                          new Point(p.x - selectPointSize,
-                                                    p.y - selectPointSize),
-                                          new Point(p.x + selectPointSize,
-                                                    p.y + selectPointSize))) {
+        while(it.hasNext()) {
+            ConnectPoint cp = it.next();
+            Point p = cp.getPos();
 
-                    return new ConnectToolStateConnected(shapes, s, i);
-                }
-
+            if(Utils.pointInRectangle(new Point(x, y),
+                                      new Point(p.x - selectPointSize,
+                                                p.y - selectPointSize),
+                                      new Point(p.x + selectPointSize,
+                                                p.y + selectPointSize))) {
+                
+                return new ConnectToolStateConnected(shapes, cp);
             }
-
-            it = it.getNext();
         }
 
         return this;
@@ -91,18 +86,17 @@ class ConnectToolStateStart extends ConnectToolState {
 
 
 class ConnectToolStateConnected extends ConnectToolState {
-    public ConnectToolStateConnected(ShapeList list, Shape s1, int p1) {
+    public ConnectToolStateConnected(ShapeList list, ConnectPoint p1) {
         shapes = list;
-        shape1 = s1;
         point1 = p1;
         
-        Point p = s1.getConnectPoint(p1);
+        Point p = p1.getPos();
         x = p.x;
         y = p.y;
     }
 
     public void draw(java.awt.Graphics canvas) {
-        Point p = shape1.getConnectPoint(point1);
+        Point p = point1.getPos();
         (new Line(p.x, p.y, x, y)).draw(canvas);
 
         canvas.fillRect(p.x - selectPointSize,
@@ -110,31 +104,29 @@ class ConnectToolStateConnected extends ConnectToolState {
                         selectPointSize * 2,
                         selectPointSize * 2);
 
-        ShapeListIterator it = shapes.getFirst();
-        while(!it.isEnd()) {
-            Shape s = it.getShape();
+        ConnectPointsCollector collector = new ConnectPointsCollector();
+        shapes.visit(collector);
 
-            int npoints = s.getConnectPointsCount();
-            for(int i = 0; i < npoints; ++i) {
-                p = s.getConnectPoint(i);
+        java.util.LinkedList<ConnectPoint> points = collector.getPoints();
+        java.util.Iterator<ConnectPoint> it = points.iterator();
 
-                if(Utils.pointInRectangle(new Point(x, y),
-                                          new Point(p.x - selectPointSize,
-                                                    p.y - selectPointSize),
-                                          new Point(p.x + selectPointSize,
-                                                    p.y + selectPointSize))) {
+        while(it.hasNext()) {
+            ConnectPoint cp = it.next();
+            p = cp.getPos();
 
-                    canvas.fillRect(p.x - selectPointSize,
-                                    p.y - selectPointSize,
-                                    selectPointSize * 2,
-                                    selectPointSize * 2);
-                    
-                    break;
-                }
+            if(Utils.pointInRectangle(new Point(x, y),
+                                      new Point(p.x - selectPointSize,
+                                                p.y - selectPointSize),
+                                      new Point(p.x + selectPointSize,
+                                                p.y + selectPointSize))) {
 
+                canvas.fillRect(p.x - selectPointSize,
+                                p.y - selectPointSize,
+                                selectPointSize * 2,
+                                selectPointSize * 2);
+                
+                break;
             }
-
-            it = it.getNext();
         }
     }
 
@@ -143,27 +135,25 @@ class ConnectToolStateConnected extends ConnectToolState {
     }
 
     public ConnectToolState onMouseUp(int x, int y) {
-        ShapeListIterator it = shapes.getFirst();
-        while(!it.isEnd()) {
-            Shape s = it.getShape();
+        ConnectPointsCollector collector = new ConnectPointsCollector();
+        shapes.visit(collector);
 
-            int npoints = s.getConnectPointsCount();
-            for(int i = 0; i < npoints; ++i) {
-                Point p = s.getConnectPoint(i);
+        java.util.LinkedList<ConnectPoint> points = collector.getPoints();
+        java.util.Iterator<ConnectPoint> it = points.iterator();
 
-                if(Utils.pointInRectangle(new Point(x, y),
-                                          new Point(p.x - selectPointSize,
-                                                    p.y - selectPointSize),
-                                          new Point(p.x + selectPointSize,
-                                                    p.y + selectPointSize))) {
+        while(it.hasNext()) {
+            ConnectPoint cp = it.next();
+            Point p = cp.getPos();
 
-                    shapes.add(new ConnectShape(shape1, point1, s, i));
-                    break;
-                }
-
+            if(Utils.pointInRectangle(new Point(x, y),
+                                      new Point(p.x - selectPointSize,
+                                                p.y - selectPointSize),
+                                      new Point(p.x + selectPointSize,
+                                                p.y + selectPointSize))) {
+                
+                shapes.add(new ConnectShape(point1, cp));
+                break;
             }
-
-            it = it.getNext();
         }
 
         return new ConnectToolStateStart(shapes);
@@ -176,10 +166,9 @@ class ConnectToolStateConnected extends ConnectToolState {
     }
 
     private ShapeList shapes;
-    private Shape shape1;
-    private int point1;
-    int x;
-    int y;
+    private ConnectPoint point1;
+    private int x;
+    private int y;
 }
 
 
