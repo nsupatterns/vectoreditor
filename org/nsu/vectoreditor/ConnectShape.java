@@ -23,9 +23,6 @@ public class ConnectShape extends Shape {
     }
 
     public void move(int dx, int dy) {}
-    public boolean trySelect(int x, int y) { return false; }
-    public int getSelectPointsCount() { return 0; }
-    public SelectPoint getSelectPoint(int index) { return null; }
 
     public int getConnectPointsCount() { return 0; }
     public Point getConnectPoint(int index) { return new Point(0, 0); }

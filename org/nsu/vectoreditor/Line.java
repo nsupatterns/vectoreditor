@@ -1,40 +1,6 @@
 
 package org.nsu.vectoreditor;
 
-
-class LineStartSelectPoint extends SelectPoint {
-    public LineStartSelectPoint(Line l) {
-        line = l;
-    }
-
-    public Point getPos() {
-        return line.getStart();
-    }
-
-    public void setPos(Point newPos) {
-        line.setStart(newPos);
-    }
-
-    private Line line;
-}
-
-class LineEndSelectPoint extends SelectPoint {
-    public LineEndSelectPoint(Line l) {
-        line = l;
-    }
-
-    public Point getPos() {
-        return line.getEnd();
-    }
-
-    public void setPos(Point newPos) {
-        line.setEnd(newPos);
-    }
-
-    private Line line;
-}
-
-
 public class Line extends Shape {
 
     public Line(int px1, int py1, int px2, int py2) {
@@ -57,44 +23,6 @@ public class Line extends Shape {
 
     public void visit(ShapeVisitor visitor) {
         visitor.visitLine(this);
-    }
-
-    public boolean trySelect(int x, int y) {
-        double dx = x;
-        double dy = y;
-        double dx1 = x1;
-        double dy1 = y1;
-        double dx2 = x2;
-        double dy2 = y2;
-
-        double a = (dx - dx1) / (dx2 - dx1);
-        double b = (dy - dy1) / (dy2 - dy1);
-
-        if(Math.abs(a - b) > 0.01)
-            return false;
-
-        return Utils.pointInRectangle(new Point(x, y), new Point(x1, y1), new Point(x2, y2));
-    }
-
-    public int getSelectPointsCount() {
-        return 2;
-    }
-    
-    public SelectPoint getSelectPoint(int index) {
-        if(index == 0)
-            return new LineStartSelectPoint(this);
-        else
-            return new LineEndSelectPoint(this);
-    }
-
-    public void setPoint(int index, int x, int y) {
-        if(index == 0) {
-            x1 = x;
-            y1 = y;
-        } else {
-            x2 = x;
-            y2 = y;
-        }
     }
 
     public int getConnectPointsCount() {

@@ -49,19 +49,15 @@ class SelectToolStatePressed extends SelectToolState {
 
     public SelectToolState onMouseUp(int x, int y) {
         if(startX == x && startY == y) {
-            ShapeListIterator it = shapes.getFirst();
-            while(!it.isEnd()) {
-                Shape s = it.getShape();
-                if(s.trySelect(x, y)) {
-                    ShapeList selList = new ShapeList();
-                    selList.add(s);
-                    return new SelectToolStateSelected(shapes, selList);
-                }
+            ShapeSelector selector = new ShapeSelector(new Point(x, y));
+            shapes.visit(selector);
 
-                it = it.getNext();
-            }
-            return new SelectToolStateStart(shapes);
-
+            if(selector.getSelectedShape() != null) {
+                ShapeList selList = new ShapeList();
+                selList.add(selector.getSelectedShape());
+                return new SelectToolStateSelected(shapes, selList);
+            } else 
+                return new SelectToolStateStart(shapes);
         }
 
         return new SelectToolStateStart(shapes);
@@ -89,56 +85,38 @@ class SelectToolStateSelected extends SelectToolState {
     }
 
     public void draw(java.awt.Graphics canvas) {
-        ShapeListIterator it = selectedShapes.getFirst();
-        while(!it.isEnd()) {
-            Shape s = it.getShape();
+        java.util.LinkedList<SelectPoint> points = getSelectedPoints();
+        java.util.Iterator<SelectPoint> it = points.iterator();
+        while(it.hasNext()) {
+            SelectPoint p = it.next();
 
-            int npoints = s.getSelectPointsCount();
-            for(int i = 0; i < npoints; ++i) {
-                SelectPoint p = s.getSelectPoint(i);
-
-                canvas.fillRect(p.getPos().x - selectPointSize,
-                                p.getPos().y - selectPointSize,
-                                selectPointSize * 2,
-                                selectPointSize * 2);
-            }
-
-            it = it.getNext();
+            canvas.fillRect(p.getPos().x - selectPointSize,
+                            p.getPos().y - selectPointSize,
+                            selectPointSize * 2,
+                            selectPointSize * 2);
         }
     }
 
     public SelectToolState onMouseDown(int x, int y) {
-        ShapeListIterator it = selectedShapes.getFirst();
-        while(!it.isEnd()) {
-            Shape s = it.getShape();
+        java.util.LinkedList<SelectPoint> points = getSelectedPoints();
+        java.util.Iterator<SelectPoint> it = points.iterator();
+        while(it.hasNext()) {
+            SelectPoint p = it.next();
 
-            int npoints = s.getSelectPointsCount();
-            for(int i = 0; i < npoints; ++i) {
-                SelectPoint p = s.getSelectPoint(i);
+            if(Utils.pointInRectangle(new Point(x, y),
+                                      new Point(p.getPos().x - selectPointSize, p.getPos().y - selectPointSize),
+                                      new Point(p.getPos().x + selectPointSize, p.getPos().y + selectPointSize))) {
 
-                if(Utils.pointInRectangle(new Point(x, y),
-                                          new Point(p.getPos().x - selectPointSize, p.getPos().y - selectPointSize),
-                                          new Point(p.getPos().x + selectPointSize, p.getPos().y + selectPointSize))) {
-
-                    return new SelectToolStateMovePoint(shapes,
-                                                        selectedShapes,
-                                                        p);
-                }
+                return new SelectToolStateMovePoint(shapes,
+                                                    selectedShapes,
+                                                    p);
             }
-
-            it = it.getNext();
         }
 
-        it = selectedShapes.getFirst();
-        while(!it.isEnd()) {
-            Shape s = it.getShape();
-
-            if(s.trySelect(x, y)) {
-                return new SelectToolStateMove(shapes, selectedShapes, x, y);
-            }
-
-            it = it.getNext();
-        }
+        ShapeSelector selector = new ShapeSelector(new Point(x, y));
+        selectedShapes.visit(selector);
+        if(selector.getSelectedShape() != null)
+            return new SelectToolStateMove(shapes, selectedShapes, x, y);
 
         return new SelectToolStatePressed(shapes, x, y);
     }
@@ -149,6 +127,12 @@ class SelectToolStateSelected extends SelectToolState {
 
     public SelectToolState onMouseMove(int x, int y) {
         return this;
+    }
+
+    private java.util.LinkedList<SelectPoint> getSelectedPoints() {
+        SelectPointsCollector collector = new SelectPointsCollector();
+        selectedShapes.visit(collector);
+        return collector.getPoints();
     }
 
     private ShapeList shapes;
@@ -169,21 +153,18 @@ class SelectToolStateMovePoint extends SelectToolState {
     }
 
     public void draw(java.awt.Graphics canvas) {
-        ShapeListIterator it = selectedShapes.getFirst();
-        while(!it.isEnd()) {
-            Shape s = it.getShape();
+        SelectPointsCollector collector = new SelectPointsCollector();
+        selectedShapes.visit(collector);
+        java.util.LinkedList<SelectPoint> points = collector.getPoints();
 
-            int npoints = s.getSelectPointsCount();
-            for(int i = 0; i < npoints; ++i) {
-                SelectPoint p = s.getSelectPoint(i);
+        java.util.Iterator<SelectPoint> it = points.iterator();
+        while(it.hasNext()) {
+            SelectPoint p = it.next();
 
-                canvas.fillRect(p.getPos().x - selectPointSize,
-                                p.getPos().y - selectPointSize,
-                                selectPointSize * 2,
-                                selectPointSize * 2);
-            }
-
-            it = it.getNext();
+            canvas.fillRect(p.getPos().x - selectPointSize,
+                            p.getPos().y - selectPointSize,
+                            selectPointSize * 2,
+                            selectPointSize * 2);
         }
     }
 
@@ -221,21 +202,18 @@ class SelectToolStateMove extends SelectToolState {
     }
 
     public void draw(java.awt.Graphics canvas) {
-        ShapeListIterator it = selectedShapes.getFirst();
-        while(!it.isEnd()) {
-            Shape s = it.getShape();
+        SelectPointsCollector collector = new SelectPointsCollector();
+        selectedShapes.visit(collector);
+        java.util.LinkedList<SelectPoint> points = collector.getPoints();
 
-            int npoints = s.getSelectPointsCount();
-            for(int i = 0; i < npoints; ++i) {
-                SelectPoint p = s.getSelectPoint(i);
+        java.util.Iterator<SelectPoint> it = points.iterator();
+        while(it.hasNext()) {
+            SelectPoint p = it.next();
 
-                canvas.fillRect(p.getPos().x - selectPointSize,
-                                p.getPos().y - selectPointSize,
-                                selectPointSize * 2,
-                                selectPointSize * 2);
-            }
-
-            it = it.getNext();
+            canvas.fillRect(p.getPos().x - selectPointSize,
+                            p.getPos().y - selectPointSize,
+                            selectPointSize * 2,
+                            selectPointSize * 2);
         }
     }
 

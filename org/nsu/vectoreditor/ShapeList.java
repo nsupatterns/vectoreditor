@@ -58,6 +58,16 @@ public class ShapeList {
         return new ShapeListIterator(array, 0);
     }
 
+    void visit(ShapeVisitor visitor) {
+        ShapeListIterator it = getFirst();
+
+        while(!it.isEnd()) {
+            Shape s = it.getShape();
+            s.visit(visitor);
+            it = it.getNext();
+        }
+    }
+
     private Shape [] array;
 };
 
