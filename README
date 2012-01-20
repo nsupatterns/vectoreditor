@@ -1,0 +1,11 @@
+
+To build:
+
+cd <source director>
+javac org/nsu/vectoreditor/*.java
+
+
+To run:
+cd <source director>
+java org.nsu.vectoreditor.Main
+
